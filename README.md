@@ -1,0 +1,2 @@
+# CM3D2.EditMenuSelectedAnime.Plugin
+CM3D2/COM3D2のエディットメニューの選択中アイテムを見つけやすいようにアイコンを拡縮させます。
