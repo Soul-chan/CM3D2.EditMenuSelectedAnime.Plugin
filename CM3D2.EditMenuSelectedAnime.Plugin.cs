@@ -7,12 +7,8 @@ using System.Collections.Generic;
 
 namespace CM3D2.EditMenuSelectedAnime.Plugin
 {
-	[PluginFilter( "CM3D2x64" )]
-	[PluginFilter( "CM3D2x86" )]
-	[PluginFilter( "CM3D2OHx64" )]
-	[PluginFilter( "CM3D2OHx86" )]
 	[PluginName( "EditMenuSelectedAnime" )]
-	[PluginVersion( "1.0.0.0" )]
+	[PluginVersion( "1.0.0.1" )]
 
 	// 定数
 	public static class Define
@@ -124,13 +120,14 @@ namespace CM3D2.EditMenuSelectedAnime.Plugin
 	public class SelectedAnimeCtrl : MonoBehaviour
 	{
 		private bool m_isInstall = false;
+		private GameObject m_child = null;  // 子供(ボタン)が消えたかの判定に使う
 		private void Start()
 		{
 		}
 
 		private void Update()
 		{
-			if ( !m_isInstall )
+			if ( !m_isInstall || m_child == null )
 			{
 				// 子供が作られ終わったら
 				if ( transform.childCount > 0 )
@@ -167,6 +164,8 @@ namespace CM3D2.EditMenuSelectedAnime.Plugin
 									topY = frame.parent.localPosition.y;
 									topButton = frame.parent;
 								}
+
+								m_child = item.gameObject;
 							}
 						}
 
@@ -224,10 +223,13 @@ namespace CM3D2.EditMenuSelectedAnime.Plugin
 	{
 		UISprite m_frameSpr;
 		UI2DSprite m_buttonSpr;
+		UISprite m_oldSpr;
 		int m_frameWidth = 0;
 		int m_frameHeight = 0;
 		int m_buttonWidth = 0;
 		int m_buttonHeight = 0;
+		int m_oldWidth = 0;
+		int m_oldHeight = 0;
 		private void Start()
 		{
 			// フレームのUISpriteを探して幅と高さを覚えておく
@@ -249,6 +251,18 @@ namespace CM3D2.EditMenuSelectedAnime.Plugin
 					m_buttonHeight = m_buttonSpr.height;
 				}
 			}
+
+			// COMの互換表示UISpriteを探して幅と高さを覚えておく
+			Transform old = transform.parent.Find( "Old" );
+			if ( old )
+			{
+				m_oldSpr = old.GetComponent<UISprite>();
+				if ( m_oldSpr )
+				{
+					m_oldWidth = m_oldSpr.width;
+					m_oldHeight = m_oldSpr.height;
+				}
+			}
 		}
 
 		private void Update()
@@ -263,6 +277,13 @@ namespace CM3D2.EditMenuSelectedAnime.Plugin
 
 				m_buttonSpr.width = m_buttonWidth + addSize;
 				m_buttonSpr.height = m_buttonHeight + addSize;
+
+				// 互換表示がある場合はこれも拡縮
+				if ( m_oldSpr )
+				{
+					m_oldSpr.width = m_oldWidth + addSize;
+					m_oldSpr.height = m_oldHeight + addSize;
+				}
 			}
 		}
 
@@ -280,6 +301,11 @@ namespace CM3D2.EditMenuSelectedAnime.Plugin
 			{
 				m_buttonSpr.width = m_buttonWidth;
 				m_buttonSpr.height = m_buttonHeight;
+			}
+			if ( m_oldSpr )
+			{
+				m_oldSpr.width = m_oldWidth;
+				m_oldSpr.height = m_oldHeight;
 			}
 		}
 	}
