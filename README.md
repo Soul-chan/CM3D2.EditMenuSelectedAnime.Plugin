@@ -22,7 +22,8 @@ public const bool ScalingEnable = false;
 #### ライセンス
 GitHubでのライセンスは一番緩そうな[MIT](https://github.com/Soul-chan/CM3D2.EditMenuSelectedAnime.Plugin/blob/master/LICENSE)ライセンスにしていますが、  
 基本的なスタンスはこれまでの↓から変更はありません。  
-改変、転載、ご自由にどうぞ。
+改変、転載、ご自由にどうぞ。  
+プルリクエストも大歓迎です。  
 
     ※MODはKISSサポート対象外です。
     ※MODを利用するに当たり、問題が発生してもKISSは一切の責任を負いかねます。
